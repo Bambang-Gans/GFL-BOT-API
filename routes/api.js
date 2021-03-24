@@ -304,17 +304,15 @@ router.get('/twtdl', async (req, res, next) => {
 	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
      if (!url) return res.json(loghandler.noturl)
 
-     twitterGetUrl(url)
-         .then(res => {        
-          res.json({
-                result
+         twitterGetUrl(url)
+         .then(videos => {
+    res.json(videos);
              })
          })
          .catch(e => {
              res.json(loghandler.invalidlink)
          })
 })
-
 
 router.get('/tiktod', async (req, res, next) => {
     var apikeyInput = req.query.apikey,
