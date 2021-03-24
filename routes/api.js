@@ -305,8 +305,10 @@ router.get('/twtdl', async (req, res, next) => {
      if (!url) return res.json(loghandler.noturl)
 
          twitterGetUrl(url)
-         .then(videos => {
-    res.json(videos);
+         .then(data => {
+         var result = data;
+             res.json({
+                 result       
              })
          })
          .catch(e => {
