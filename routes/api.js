@@ -21,6 +21,7 @@ var fetch = require('node-fetch');
 var cheerio = require('cheerio');
 var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
+var twitterGetUrl = require('twitter-url-direct');
 var YoutubeAPI = require('simple-youtube-api')
 var youtubs = new YoutubeAPI('AIzaSyB2DRtHACCeIzgduQzzITkS4rnpz_sA2BA'); 
 var router  = express.Router();
@@ -293,6 +294,27 @@ router.get('/remove', (req, res, next) => {
         res.json(loghandler.error)
     }
 })
+
+router.get('/twtdl', async (req, res, next) => {
+    var apikeyInput = req.query.apikey,
+        url = req.query.url
+
+
+	if(!apikeyInput) return res.json(loghandler.notparam)
+	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
+     if (!url) return res.json(loghandler.noturl)
+
+     twitterGetUrl(url)
+         .then(res => {        
+          res.json({
+                result
+             })
+         })
+         .catch(e => {
+             res.json(loghandler.invalidlink)
+         })
+})
+
 
 router.get('/tiktod', async (req, res, next) => {
     var apikeyInput = req.query.apikey,
