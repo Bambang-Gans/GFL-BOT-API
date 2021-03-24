@@ -305,7 +305,8 @@ router.get('/twtdl', async (req, res, next) => {
      if (!url) return res.json(loghandler.noturl)
 
          twitterGetUrl(url)
-         .then(data => {
+         .then(response => response.json())
+        .then(data => {
          var result = data;
              res.json({
                  result       
