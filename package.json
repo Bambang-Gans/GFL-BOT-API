@@ -39,6 +39,7 @@
     "node-fetch": "^2.6.1",
     "request": "^2.88.2",
     "scrape-yt": "^1.4.8",
+    "simple-youtube-api": "^5.2.1",
     "ssl-express-www": "^3.0.7",
     "tiktok-scraper": "^1.4.12",
     "urlencode": "^1.1.0",
