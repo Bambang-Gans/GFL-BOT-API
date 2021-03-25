@@ -17,7 +17,6 @@ var ytpl = require('ytpl');
 var secure = require('ssl-express-www');
 var cors = require('cors');
 var photo2anime = require('photo2anime');
-var anime = new photo2anime();
 var scrapeYt = require("scrape-yt");
 var fetch = require('node-fetch');
 var cheerio = require('cheerio');
@@ -305,6 +304,7 @@ router.get('/photo2anime', async (req, res, next) => {
 	if(!apikeyInput) return res.json(loghandler.notparam)
 	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
     if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+    var anime = new photo2anime();
     anime.on('ready', () => {
     anime.transform({
         photo: '${url}',
