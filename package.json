@@ -38,7 +38,7 @@
     "morgan": "^1.10.0",
     "needle": "^2.6.0",
     "node-fetch": "^2.6.1",
-    "photo2anime" "^1.0.0",
+    "photo2anime": "^1.0.0",
     "request": "^2.88.2",
     "scrape-yt": "^1.4.8",
     "simple-youtube-api": "^5.2.1",
