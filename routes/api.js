@@ -312,8 +312,11 @@ router.get('/photo2anime', async (req, res, next) => {
         destinyFolder: './images'
     })
     .then(data => {
-        console.log('Image', data);
-    })
+        var result = data;
+             res.json({
+                 result
+             })
+         })
     .catch(err => {
         console.log('Error', err);
     })
