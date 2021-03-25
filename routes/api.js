@@ -16,6 +16,8 @@ var ytdl = require('ytdl-core');
 var ytpl = require('ytpl');
 var secure = require('ssl-express-www');
 var cors = require('cors');
+var photo2anime = require('photo2anime');
+var anime = new photo2anime();
 var scrapeYt = require("scrape-yt");
 var fetch = require('node-fetch');
 var cheerio = require('cheerio');
@@ -295,95 +297,27 @@ router.get('/remove', (req, res, next) => {
     }
 })
 
-router.get('/testi/photofunia', async (req, res, next) => {
-        var theme = req.query.theme,
-             text = req.query.text,
-             text2 = req.query.text2,
-             text3 = req.query.text3,
-             apikeyInput = req.query.apikey;
-        
+
+router.get('/photo2anime', async (req, res, next) => {
+        var apikeyInput = req.query.apikey,
+            url = req.query.url
+            
 	if(!apikeyInput) return res.json(loghandler.notparam)
 	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
-        if (!theme) return res.json(loghandler.nottheme)
-        if (theme != 'neon-tes' && theme != 'panah-tanda') return res.json(loghandler.notheme)
-        if (!text) return res.json(loghandler.nottext)
-
-        if (theme == 'neon-tes') {
-        	if (!text2) return res.json(loghandler.nottext2)
-            try {
-            request.post({
-                url: "https://m.photofunia.com/effects/neon-writing",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `text_1=${text}&text_2=${text2}&login=OK`,
-                }, (e,r,b) => {
-                    if (!e) {
-                        $ = cheerio.load(b)
-                        $(".thumbnail").find("img").each(function() {
-                            h = $(this).attr("src")
-                            var result = "https://m.photofunia.com/"+h
-                            fetch(encodeURI(`https://api.imgbb.com/1/upload?expiration=120&key=761ea2d5575581057a799d14e9c78e28&image=${result}&name=${randomTextNumber}`))
-                                .then(response => response.json())
-                                .then(data => {
-                                    var urlnya = data.data.url,
-                                        delete_url = data.data.delete_url;
-                                        res.json({
-                                            status : true,
-                                            creator : `${creator}`,
-                                            message : `jangan lupa follow ${creator}`,
-                                            result:{
-                                                url:urlnya,
-                                                delete_url: delete_url,
-                                                info: 'url akan hilang setelah 2 menit'
-                                            }
-                                        })
-                                })
-                        })
-                    }
-                })
-                } catch (e) {
-                	console.log(e);
-                res.json(loghandler.error)
-                }
-        } else if (theme == 'panah-tanda') {
-        	if (!text2) return res.json(loghandler.nottext2)
-            request.post({
-                url: "https://m.photofunia.com/effects/arrow-signs",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `text_1=${text}&text_2=${text2}&login=OK`,
-                }, (e,r,b) => {
-                    if (!e) {
-                        $ = cheerio.load(b)
-                        $(".thumbnail").find("img").each(function() {
-                            h = $(this).attr("src")
-                            var result = "https://m.photofunia.com/"+h
-                            fetch(encodeURI(`https://api.imgbb.com/1/upload?expiration=120&key=761ea2d5575581057a799d14e9c78e28&image=${result}&name=${randomTextNumber}`))
-                                .then(response => response.json())
-                                .then(data => {
-                                    var urlnya = data.data.url,
-                                        delete_url = data.data.delete_url;
-                                        res.json({
-                                            status : true,
-                                            creator : `${creator}`,
-                                            message : `jangan lupa follow ${creator}`,
-                                            result:{
-                                                url:urlnya,
-                                                delete_url: delete_url,
-                                                info: 'url akan hilang setelah 2 menit'
-                                            }
-                                        })
-                                })
-                        })
-                    }
-                }) 
-        } else {
-            res.json(loghandler.error)
-        }
+    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+    anime.on('ready', () => {
+    anime.transform({
+        photo: '${url}',
+        // To save the image to a specific path
+        destinyFolder: './images'
+    })
+    .then(data => {
+        console.log('Image', data);
+    })
+    .catch(err => {
+        console.log('Error', err);
+    })
 })
-
 
 
 router.get('/tiktod', async (req, res, next) => {
