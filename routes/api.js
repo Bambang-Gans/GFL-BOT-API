@@ -19,6 +19,8 @@ var cors = require('cors');
 var scrapeYt = require("scrape-yt");
 var fetch = require('node-fetch');
 var cheerio = require('cheerio');
+var photo2anime = require('photo2anime');
+var anime = new photo2anime();
 var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
 var twitterGetUrl = require("twitter-url-direct");
@@ -293,6 +295,31 @@ router.get('/remove', (req, res, next) => {
         console.log(e)
         res.json(loghandler.error)
     }
+})
+
+
+router.get('/foto2anime', async (req, res, next) => {
+        var apikeyInput = req.query.apikey,
+            url = req.query.url
+            
+	if(!apikeyInput) return res.json(loghandler.notparam)
+	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
+    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+anime.on('ready', () => {
+    anime.transform({
+        photo: '${url}',
+        // To save the image to a specific path
+        destinyFolder: './images'
+    })
+    .then(data => {
+        var result = data;
+             res.json({
+                 result
+             })
+         })
+         .catch(e => {
+         	res.json(loghandler.error)
+})
 })
 
 
