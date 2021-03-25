@@ -19,7 +19,7 @@ var cors = require('cors');
 var scrapeYt = require("scrape-yt");
 var fetch = require('node-fetch');
 var cheerio = require('cheerio');
-var photo2anime = require('photo2anime');
+var photo2anime = require('photo2anime')
 var anime = new photo2anime();
 var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
@@ -304,9 +304,9 @@ router.get('/foto2anime', async (req, res, next) => {
             
 	if(!apikeyInput) return res.json(loghandler.notparam)
 	if(apikeyInput != 'GFL') return res.json(loghandler.invalidKey)
-    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
-anime.on('ready', () => {
-    anime.transform({
+        if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+        anime.on('ready', () => {
+        anime.transform({
         photo: '${url}',
         // To save the image to a specific path
         destinyFolder: './images'
